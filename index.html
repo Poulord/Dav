@@ -3,35 +3,50 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OpenCV.js — Image Arithmetics Demo</title>
+  <title>Lumina Studio — Laboratorio visual</title>
   <link rel="stylesheet" href="styles.css" />
   <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
   <script defer src="app.js"></script>
 </head>
 <body>
   <div class="page">
-    <header class="header">
-      <span class="badge">OpenCV.js Playground</span>
-      <h1>Operaciones aritméticas con imágenes</h1>
+    <header class="header hero">
+      <div class="hero-top">
+        <div class="badge badge-neo">Lumina Studio</div>
+        <div class="hero-tag">Laboratorio visual en tiempo real</div>
+      </div>
+      <h1>Explora fusiones creativas entre imágenes</h1>
       <p>
-        Suma, resta, operaciones bitwise y blending. Usa dos imágenes y explora las
-        combinaciones más comunes del tutorial de OpenCV.js.
+        Ajusta combinaciones, mezcla intensidades y prueba nuevas formas de
+        superponer imágenes con OpenCV.js desde tu navegador.
       </p>
+      <div class="hero-stats">
+        <div>
+          <span class="stat-label">Modo</span>
+          <strong>Experimental</strong>
+        </div>
+        <div>
+          <span class="stat-label">Formato</span>
+          <strong>Imágenes locales</strong>
+        </div>
+        <div>
+          <span class="stat-label">Motor</span>
+          <strong>OpenCV.js</strong>
+        </div>
+      </div>
     </header>
     
-    <section class="info-banner">
+    <section class="info-banner intro-panel">
       <div>
-        <h3>¿Qué hace esta aplicación?</h3>
+        <h3>¿Qué hace este laboratorio?</h3>
         <p>
-          Esta aplicación web utiliza <strong>OpenCV.js</strong> para realizar
-          operaciones aritméticas y lógicas entre dos imágenes directamente
-          en el navegador.
+          Combina dos imágenes mediante filtros matemáticos y lógicos para crear
+          composiciones, fusiones y efectos de iluminación.
         </p>
       </div>
       <p>
-        El objetivo es mostrar cómo OpenCV puede combinar imágenes píxel a píxel
-        usando técnicas comunes en visión por computadora, como suma, resta,
-        operaciones bitwise y mezclas ponderadas.
+        Elige un filtro, ajusta el nivel de mezcla cuando corresponda y obtén el
+        resultado en tiempo real. Ideal para prototipar ideas visuales rápidas.
       </p>
     </section>
 
@@ -40,21 +55,21 @@
         <div class="operation-header">
           <div class="operation-icon" id="operationIcon" aria-hidden="true">➕</div>
           <div>
-            <h3>Operación seleccionada</h3>
-            <p class="muted">Define cómo se combinan los píxeles entre A y B.</p>
+            <h3>Filtro activo</h3>
+            <p class="muted">Define cómo se mezcla la información entre A y B.</p>
           </div>
         </div>
 
         <label class="field">
-          Operación
+          Filtro
           <div class="field-control">
             <select id="op">
               <option value="add">add (A + B)</option>
               <option value="subtract">subtract (A - B)</option>
-              <option value="absdiff">absdiff |A - B|</option>
+              <option value="multiply">multiply (A × B)</option>
               <option value="and">bitwise AND</option>
               <option value="or">bitwise OR</option>
-              <option value="xor">bitwise XOR</option>
+              <option value="lighten">lighten (max)</option>
               <option value="notA">bitwise NOT (A)</option>
               <option value="blend">blend (addWeighted)</option>
             </select>
@@ -71,7 +86,7 @@
         </div>
 
         <div class="operation-explanation">
-          <h4>Explicación de la operación</h4>
+          <h4>Explicación del filtro</h4>
           <p id="filterExplanation"></p>
         </div>
       </section>
@@ -121,7 +136,7 @@
       </section>
 
       <section class="card controls-card">
-        <h3>Acción</h3>
+        <h3>Herramientas</h3>
         <div class="controls">
           <div class="status" id="status">Cargando OpenCV.js…</div>
 

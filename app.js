@@ -265,14 +265,14 @@ async function applyOperation() {
       cv.add(Aprep, Bprep, dst);
     } else if (op === 'subtract') {
       cv.subtract(Aprep, Bprep, dst);
-    } else if (op === 'absdiff') {
-      cv.absdiff(Aprep, Bprep, dst);
+    } else if (op === 'multiply') {
+      cv.multiply(Aprep, Bprep, dst, 1 / 255);
     } else if (op === 'and') {
       cv.bitwise_and(Aprep, Bprep, dst);
     } else if (op === 'or') {
       cv.bitwise_or(Aprep, Bprep, dst);
-    } else if (op === 'xor') {
-      cv.bitwise_xor(Aprep, Bprep, dst);
+    } else if (op === 'lighten') {
+      cv.max(Aprep, Bprep, dst);
     } else if (op === 'notA') {
       cv.bitwise_not(Aprep, dst);
     } else if (op === 'blend') {
@@ -383,13 +383,13 @@ const filterDetails = {
       'Resta los píxeles de la imagen B a la imagen A. Se utiliza para resaltar ' +
       'diferencias o eliminar fondos.',
   },
-  absdiff: {
-    title: 'AbsDiff |A - B|',
-    icon: '📏',
+  multiply: {
+    title: 'Multiply (A × B)',
+    icon: '✴️',
     category: 'arithmetic',
     description:
-      'Calcula la diferencia absoluta entre imágenes. Es muy usado en detección ' +
-      'de movimiento y comparación de frames.',
+      'Multiplica píxel a píxel para generar un efecto de oscurecimiento suave. ' +
+      'Ideal para crear sombras o contrastes con textura.',
   },
   and: {
     title: 'Bitwise AND',
@@ -407,13 +407,13 @@ const filterDetails = {
       'Combina las regiones visibles de ambas imágenes. Se utiliza para unir ' +
       'formas o capas binarias.',
   },
-  xor: {
-    title: 'Bitwise XOR',
-    icon: '⚡',
-    category: 'bitwise',
+  lighten: {
+    title: 'Lighten (Max)',
+    icon: '✨',
+    category: 'blend',
     description:
-      'Muestra únicamente las diferencias entre imágenes. Útil para detectar ' +
-      'cambios y depuración visual.',
+      'Elige el valor más claro entre A y B en cada píxel. Se usa para sumar ' +
+      'luces y resaltar elementos brillantes.',
   },
   notA: {
     title: 'Bitwise NOT',
