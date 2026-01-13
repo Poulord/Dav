@@ -33,6 +33,52 @@
         </div>
       </div>
     </header>
+    
+    <section class="info-banner intro-panel">
+      <div>
+        <h3>¿Qué hace este laboratorio?</h3>
+        <p>
+          Combina dos imágenes mediante filtros matemáticos y lógicos para crear
+          composiciones, fusiones y efectos de iluminación.
+        </p>
+      </div>
+      <p>
+        Elige un filtro, ajusta el nivel de mezcla cuando corresponda y obtén el
+        resultado en tiempo real. Ideal para prototipar ideas visuales rápidas.
+      </p>
+    </section>
+
+    <main class="grid">
+      <section class="card operation-card" data-category="arithmetic" id="operationCard">
+        <div class="operation-header">
+          <div class="operation-icon" id="operationIcon" aria-hidden="true">➕</div>
+          <div>
+            <h3>Filtro activo</h3>
+            <p class="muted">Define cómo se mezcla la información entre A y B.</p>
+          </div>
+        </div>
+
+        <label class="field">
+          Filtro
+          <div class="field-control">
+            <select id="op">
+              <option value="add">add (A + B)</option>
+              <option value="subtract">subtract (A - B)</option>
+              <option value="multiply">multiply (A × B)</option>
+              <option value="lighten">lighten (max)</option>
+              <option value="blend">blend (addWeighted)</option>
+            </select>
+            <span class="hint-icon" title="Elige el tipo de operación entre las imágenes">ⓘ</span>
+          </div>
+        </label>
+
+        <div id="blendControls" class="blend-controls" style="display: none;">
+          <label class="field">
+            Alpha (A)
+            <input id="alpha" type="range" min="0" max="1" value="0.5" step="0.01" />
+          </label>
+          <div class="footer-note">Beta (B) = 1 - alpha</div>
+        </div>
 
     <main class="layout">
       <section class="intro-card">
