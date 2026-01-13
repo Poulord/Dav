@@ -95,66 +95,6 @@
         </p>
       </section>
 
-      <aside class="sidebar">
-        <section class="card operation-card" data-category="arithmetic" id="operationCard">
-          <div class="operation-header">
-            <div class="operation-icon" id="operationIcon" aria-hidden="true">➕</div>
-            <div>
-              <h3>Filtro activo</h3>
-              <p class="muted">Define cómo se mezcla la información entre A y B.</p>
-            </div>
-          </div>
-
-          <label class="field">
-            Filtro
-            <div class="field-control">
-              <select id="op">
-                <option value="add">add (A + B)</option>
-                <option value="subtract">subtract (A - B)</option>
-                <option value="multiply">multiply (A × B)</option>
-                <option value="lighten">lighten (max)</option>
-                <option value="blend">blend (addWeighted)</option>
-              </select>
-              <span class="hint-icon" title="Elige el tipo de operación entre las imágenes">ⓘ</span>
-            </div>
-          </label>
-
-          <div id="blendControls" class="blend-controls" style="display: none;">
-            <label class="field">
-              Alpha (A)
-              <input id="alpha" type="range" min="0" max="1" value="0.5" step="0.01" />
-            </label>
-            <div class="footer-note">Beta (B) = 1 - alpha</div>
-          </div>
-
-          <div class="operation-explanation">
-            <h4>Explicación del filtro</h4>
-            <p id="filterExplanation"></p>
-          </div>
-        </section>
-
-        <section class="card controls-card">
-          <h3>Herramientas</h3>
-          <div class="controls">
-            <div class="status" id="status">Cargando OpenCV.js…</div>
-
-            <label class="toggle">
-              <input id="autoResize" type="checkbox" checked />
-              <span class="toggle-ui" aria-hidden="true"></span>
-              Ajustar tamaños automáticamente
-              <span class="hint-icon" title="Si las imágenes no tienen la misma resolución, se ajusta B a A">ⓘ</span>
-            </label>
-
-            <div class="buttons">
-              <button class="primary" id="run">
-                <span class="btn-icon">⚡</span>
-                <span class="btn-text" data-role="label">Aplicar operación</span>
-              </button>
-              <button class="secondary" id="clear">Limpiar</button>
-            </div>
-          </div>
-        </section>
-      </aside>
 
       <section class="workspace">
         <div class="image-grid">
@@ -165,7 +105,7 @@
             </div>
             <div class="upload-zone" id="uploadZoneA">
               <div class="upload-placeholder">
-                <span class="placeholder-icon">🖼️</span>
+                <span class="placeholder-icon"></span>
                 <div>
                   <strong>Arrastra y suelta la imagen</strong>
                   <p>o haz clic para seleccionar desde tu dispositivo</p>
@@ -187,7 +127,7 @@
             </div>
             <div class="upload-zone" id="uploadZoneB">
               <div class="upload-placeholder">
-                <span class="placeholder-icon">🧩</span>
+                <span class="placeholder-icon"></span>
                 <div>
                   <strong>Arrastra y suelta la imagen</strong>
                   <p>o haz clic para seleccionar desde tu dispositivo</p>
