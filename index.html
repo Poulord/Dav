@@ -10,16 +10,14 @@
 </head>
 <body>
   <div class="page">
-    <header class="header hero">
-      <div class="hero-top">
+    <header class="topbar">
+      <div class="brand">
         <div class="badge badge-neo">Lumina Studio</div>
-        <div class="hero-tag">Laboratorio visual en tiempo real</div>
+        <div>
+          <p class="hero-tag">Laboratorio visual en tiempo real</p>
+          <h1>Explora fusiones creativas entre imágenes</h1>
+        </div>
       </div>
-      <h1>Explora fusiones creativas entre imágenes</h1>
-      <p>
-        Ajusta combinaciones, mezcla intensidades y prueba nuevas formas de
-        superponer imágenes con OpenCV.js desde tu navegador.
-      </p>
       <div class="hero-stats">
         <div>
           <span class="stat-label">Modo</span>
@@ -82,108 +80,160 @@
           <div class="footer-note">Beta (B) = 1 - alpha</div>
         </div>
 
-        <div class="operation-explanation">
-          <h4>Explicación del filtro</h4>
-          <p id="filterExplanation"></p>
+    <main class="layout">
+      <section class="intro-card">
+        <div>
+          <h2>¿Qué hace este laboratorio?</h2>
+          <p>
+            Combina dos imágenes mediante filtros matemáticos para crear composiciones,
+            fusiones y efectos de iluminación.
+          </p>
         </div>
+        <p>
+          Elige un filtro, ajusta el nivel de mezcla cuando corresponda y obtén el
+          resultado en tiempo real. Ideal para prototipar ideas visuales rápidas.
+        </p>
       </section>
 
-      <section class="card image-card">
-        <div class="card-header">
-          <h3>Imagen A</h3>
-          <span class="pill">Base</span>
-        </div>
-        <div class="upload-zone" id="uploadZoneA">
-          <div class="upload-placeholder">
-            <span class="placeholder-icon">🖼️</span>
+      <aside class="sidebar">
+        <section class="card operation-card" data-category="arithmetic" id="operationCard">
+          <div class="operation-header">
+            <div class="operation-icon" id="operationIcon" aria-hidden="true">➕</div>
             <div>
-              <strong>Arrastra y suelta la imagen</strong>
-              <p>o haz clic para seleccionar desde tu dispositivo</p>
+              <h3>Filtro activo</h3>
+              <p class="muted">Define cómo se mezcla la información entre A y B.</p>
             </div>
           </div>
-          <input id="fileA" type="file" accept="image/*" />
-        </div>
-        <div class="upload-meta">
-          <span id="fileNameA">Sin archivo</span>
-          <span id="resolutionA">0×0</span>
-        </div>
-        <canvas id="canvasA"></canvas>
-      </section>
 
-      <section class="card image-card">
-        <div class="card-header">
-          <h3>Imagen B</h3>
-          <span class="pill">Secundaria</span>
-        </div>
-        <div class="upload-zone" id="uploadZoneB">
-          <div class="upload-placeholder">
-            <span class="placeholder-icon">🧩</span>
-            <div>
-              <strong>Arrastra y suelta la imagen</strong>
-              <p>o haz clic para seleccionar desde tu dispositivo</p>
+          <label class="field">
+            Filtro
+            <div class="field-control">
+              <select id="op">
+                <option value="add">add (A + B)</option>
+                <option value="subtract">subtract (A - B)</option>
+                <option value="multiply">multiply (A × B)</option>
+                <option value="lighten">lighten (max)</option>
+                <option value="blend">blend (addWeighted)</option>
+              </select>
+              <span class="hint-icon" title="Elige el tipo de operación entre las imágenes">ⓘ</span>
             </div>
-          </div>
-          <input id="fileB" type="file" accept="image/*" />
-        </div>
-        <div class="upload-meta">
-          <span id="fileNameB">Sin archivo</span>
-          <span id="resolutionB">0×0</span>
-        </div>
-        <canvas id="canvasB"></canvas>
-      </section>
-
-      <section class="card controls-card">
-        <h3>Herramientas</h3>
-        <div class="controls">
-          <div class="status" id="status">Cargando OpenCV.js…</div>
-
-          <label class="toggle">
-            <input id="autoResize" type="checkbox" checked />
-            <span class="toggle-ui" aria-hidden="true"></span>
-            Ajustar tamaños automáticamente
-            <span class="hint-icon" title="Si las imágenes no tienen la misma resolución, se ajusta B a A">ⓘ</span>
           </label>
 
-          <div class="buttons">
-            <button class="primary" id="run">
-              <span class="btn-icon">⚡</span>
-              <span class="btn-text" data-role="label">Aplicar operación</span>
-            </button>
-            <button class="secondary" id="clear">Limpiar</button>
-          </div>
-        </div>
-      </section>
-
-      <section class="card result-card" id="resultCard">
-        <div class="card-header">
-          <div>
-            <h3>Resultado</h3>
-            <p class="muted">Vista final de la operación aplicada.</p>
-          </div>
-          <div class="result-actions">
-            <label class="toggle small">
-              <input id="compareToggle" type="checkbox" />
-              <span class="toggle-ui" aria-hidden="true"></span>
-              Comparar A/B
+          <div id="blendControls" class="blend-controls" style="display: none;">
+            <label class="field">
+              Alpha (A)
+              <input id="alpha" type="range" min="0" max="1" value="0.5" step="0.01" />
             </label>
-            <button class="secondary" id="download">
-              ⬇️ Descargar imagen
-            </button>
+            <div class="footer-note">Beta (B) = 1 - alpha</div>
           </div>
-        </div>
-        <div class="comparison-grid" id="comparisonGrid">
-          <div>
-            <p>Imagen A</p>
-            <img id="compareA" alt="Vista previa de la imagen A" />
+
+          <div class="operation-explanation">
+            <h4>Explicación del filtro</h4>
+            <p id="filterExplanation"></p>
           </div>
-          <div>
-            <p>Imagen B</p>
-            <img id="compareB" alt="Vista previa de la imagen B" />
+        </section>
+
+        <section class="card controls-card">
+          <h3>Herramientas</h3>
+          <div class="controls">
+            <div class="status" id="status">Cargando OpenCV.js…</div>
+
+            <label class="toggle">
+              <input id="autoResize" type="checkbox" checked />
+              <span class="toggle-ui" aria-hidden="true"></span>
+              Ajustar tamaños automáticamente
+              <span class="hint-icon" title="Si las imágenes no tienen la misma resolución, se ajusta B a A">ⓘ</span>
+            </label>
+
+            <div class="buttons">
+              <button class="primary" id="run">
+                <span class="btn-icon">⚡</span>
+                <span class="btn-text" data-role="label">Aplicar operación</span>
+              </button>
+              <button class="secondary" id="clear">Limpiar</button>
+            </div>
           </div>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <div class="image-grid">
+          <section class="card image-card">
+            <div class="card-header">
+              <h3>Imagen A</h3>
+              <span class="pill">Base</span>
+            </div>
+            <div class="upload-zone" id="uploadZoneA">
+              <div class="upload-placeholder">
+                <span class="placeholder-icon">🖼️</span>
+                <div>
+                  <strong>Arrastra y suelta la imagen</strong>
+                  <p>o haz clic para seleccionar desde tu dispositivo</p>
+                </div>
+              </div>
+              <input id="fileA" type="file" accept="image/*" />
+            </div>
+            <div class="upload-meta">
+              <span id="fileNameA">Sin archivo</span>
+              <span id="resolutionA">0×0</span>
+            </div>
+            <canvas id="canvasA"></canvas>
+          </section>
+
+          <section class="card image-card">
+            <div class="card-header">
+              <h3>Imagen B</h3>
+              <span class="pill">Secundaria</span>
+            </div>
+            <div class="upload-zone" id="uploadZoneB">
+              <div class="upload-placeholder">
+                <span class="placeholder-icon">🧩</span>
+                <div>
+                  <strong>Arrastra y suelta la imagen</strong>
+                  <p>o haz clic para seleccionar desde tu dispositivo</p>
+                </div>
+              </div>
+              <input id="fileB" type="file" accept="image/*" />
+            </div>
+            <div class="upload-meta">
+              <span id="fileNameB">Sin archivo</span>
+              <span id="resolutionB">0×0</span>
+            </div>
+            <canvas id="canvasB"></canvas>
+          </section>
         </div>
-        <div class="result-canvas">
-          <canvas id="canvasOut"></canvas>
-        </div>
+
+        <section class="card result-card" id="resultCard">
+          <div class="card-header">
+            <div>
+              <h3>Resultado</h3>
+              <p class="muted">Vista final de la operación aplicada.</p>
+            </div>
+            <div class="result-actions">
+              <label class="toggle small">
+                <input id="compareToggle" type="checkbox" />
+                <span class="toggle-ui" aria-hidden="true"></span>
+                Comparar A/B
+              </label>
+              <button class="secondary" id="download">
+                ⬇️ Descargar imagen
+              </button>
+            </div>
+          </div>
+          <div class="comparison-grid" id="comparisonGrid">
+            <div>
+              <p>Imagen A</p>
+              <img id="compareA" alt="Vista previa de la imagen A" />
+            </div>
+            <div>
+              <p>Imagen B</p>
+              <img id="compareB" alt="Vista previa de la imagen B" />
+            </div>
+          </div>
+          <div class="result-canvas">
+            <canvas id="canvasOut"></canvas>
+          </div>
+        </section>
       </section>
     </main>
   </div>
