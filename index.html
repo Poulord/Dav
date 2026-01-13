@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OpenCV.js — Image Arithmetics Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <span class="badge">OpenCV.js Playground</span>
+      <h1>Operaciones aritméticas con imágenes</h1>
+      <p>
+        Suma, resta, operaciones bitwise y blending. Usa dos imágenes y explora las
+        combinaciones más comunes del tutorial de OpenCV.js.
+      </p>
+    </header>
+    
+    <section class="info-banner">
+      <div>
+        <h3>¿Qué hace esta aplicación?</h3>
+        <p>
+          Esta aplicación web utiliza <strong>OpenCV.js</strong> para realizar
+          operaciones aritméticas y lógicas entre dos imágenes directamente
+          en el navegador.
+        </p>
+      </div>
+      <p>
+        El objetivo es mostrar cómo OpenCV puede combinar imágenes píxel a píxel
+        usando técnicas comunes en visión por computadora, como suma, resta,
+        operaciones bitwise y mezclas ponderadas.
+      </p>
+    </section>
+
+    <main class="grid">
+      <section class="card operation-card" data-category="arithmetic" id="operationCard">
+        <div class="operation-header">
+          <div class="operation-icon" id="operationIcon" aria-hidden="true">➕</div>
+          <div>
+            <h3>Operación seleccionada</h3>
+            <p class="muted">Define cómo se combinan los píxeles entre A y B.</p>
+          </div>
+        </div>
+
+        <label class="field">
+          Operación
+          <div class="field-control">
+            <select id="op">
+              <option value="add">add (A + B)</option>
+              <option value="subtract">subtract (A - B)</option>
+              <option value="absdiff">absdiff |A - B|</option>
+              <option value="and">bitwise AND</option>
+              <option value="or">bitwise OR</option>
+              <option value="xor">bitwise XOR</option>
+              <option value="notA">bitwise NOT (A)</option>
+              <option value="blend">blend (addWeighted)</option>
+            </select>
+            <span class="hint-icon" title="Elige el tipo de operación entre las imágenes">ⓘ</span>
+          </div>
+        </label>
+
+        <div id="blendControls" class="blend-controls" style="display: none;">
+          <label class="field">
+            Alpha (A)
+            <input id="alpha" type="range" min="0" max="1" value="0.5" step="0.01" />
+          </label>
+          <div class="footer-note">Beta (B) = 1 - alpha</div>
+        </div>
+
+        <div class="operation-explanation">
+          <h4>Explicación de la operación</h4>
+          <p id="filterExplanation"></p>
+        </div>
+      </section>
+
+      <section class="card image-card">
+        <div class="card-header">
+          <h3>Imagen A</h3>
+          <span class="pill">Base</span>
+        </div>
+        <div class="upload-zone" id="uploadZoneA">
+          <div class="upload-placeholder">
+            <span class="placeholder-icon">🖼️</span>
+            <div>
+              <strong>Arrastra y suelta la imagen</strong>
+              <p>o haz clic para seleccionar desde tu dispositivo</p>
+            </div>
+          </div>
+          <input id="fileA" type="file" accept="image/*" />
+        </div>
+        <div class="upload-meta">
+          <span id="fileNameA">Sin archivo</span>
+          <span id="resolutionA">0×0</span>
+        </div>
+        <canvas id="canvasA"></canvas>
+      </section>
+
+      <section class="card image-card">
+        <div class="card-header">
+          <h3>Imagen B</h3>
+          <span class="pill">Secundaria</span>
+        </div>
+        <div class="upload-zone" id="uploadZoneB">
+          <div class="upload-placeholder">
+            <span class="placeholder-icon">🧩</span>
+            <div>
+              <strong>Arrastra y suelta la imagen</strong>
+              <p>o haz clic para seleccionar desde tu dispositivo</p>
+            </div>
+          </div>
+          <input id="fileB" type="file" accept="image/*" />
+        </div>
+        <div class="upload-meta">
+          <span id="fileNameB">Sin archivo</span>
+          <span id="resolutionB">0×0</span>
+        </div>
+        <canvas id="canvasB"></canvas>
+      </section>
+
+      <section class="card controls-card">
+        <h3>Acción</h3>
+        <div class="controls">
+          <div class="status" id="status">Cargando OpenCV.js…</div>
+
+          <label class="toggle">
+            <input id="autoResize" type="checkbox" checked />
+            <span class="toggle-ui" aria-hidden="true"></span>
+            Ajustar tamaños automáticamente
+            <span class="hint-icon" title="Si las imágenes no tienen la misma resolución, se ajusta B a A">ⓘ</span>
+          </label>
+
+          <div class="buttons">
+            <button class="primary" id="run">
+              <span class="btn-icon">⚡</span>
+              <span class="btn-text" data-role="label">Aplicar operación</span>
+            </button>
+            <button class="secondary" id="clear">Limpiar</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card result-card" id="resultCard">
+        <div class="card-header">
+          <div>
+            <h3>Resultado</h3>
+            <p class="muted">Vista final de la operación aplicada.</p>
+          </div>
+          <div class="result-actions">
+            <label class="toggle small">
+              <input id="compareToggle" type="checkbox" />
+              <span class="toggle-ui" aria-hidden="true"></span>
+              Comparar A/B
+            </label>
+            <button class="secondary" id="download">
+              ⬇️ Descargar imagen
+            </button>
+          </div>
+        </div>
+        <div class="comparison-grid" id="comparisonGrid">
+          <div>
+            <p>Imagen A</p>
+            <img id="compareA" alt="Vista previa de la imagen A" />
+          </div>
+          <div>
+            <p>Imagen B</p>
+            <img id="compareB" alt="Vista previa de la imagen B" />
+          </div>
+        </div>
+        <div class="result-canvas">
+          <canvas id="canvasOut"></canvas>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
