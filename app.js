@@ -193,8 +193,7 @@ async function applyOperation() {
     setStatus('Carga la imagen A antes de aplicar la operación.');
     return;
   }
-  const needsB = op !== 'notA';
-  if (needsB && els.canvasB.width === 0) {
+  if (els.canvasB.width === 0) {
     setStatus('Carga la imagen B antes de aplicar la operación.');
     return;
   }
@@ -215,15 +214,12 @@ async function applyOperation() {
   try {
     A = cv.imread(els.canvasA);
     let A2 = A;
-    let B2 = null;
-    if (needsB) {
-      B = cv.imread(els.canvasB);
-      const resizedResult = ensureSameSize(A, B);
-      A2 = resizedResult.A;
-      B2 = resizedResult.B;
-      if (resizedResult.resized) {
-        Bout = B2;
-      }
+    B = cv.imread(els.canvasB);
+    const resizedResult = ensureSameSize(A, B);
+    A2 = resizedResult.A;
+    const B2 = resizedResult.B;
+    if (resizedResult.resized) {
+      Bout = B2;
     }
 
     const prepareForOps = (mat) => {
@@ -246,17 +242,15 @@ async function applyOperation() {
     if (preparedA.converted) {
       AprepConverted = Aprep;
     }
-    if (needsB) {
-      const preparedB = prepareForOps(B2);
-      Bprep = preparedB.mat;
-      if (preparedB.converted) {
-        BprepConverted = Bprep;
-      }
-      if (Aprep.type() !== Bprep.type()) {
-        Btmp = new cv.Mat();
-        Bprep.convertTo(Btmp, Aprep.type());
-        Bprep = Btmp;
-      }
+    const preparedB = prepareForOps(B2);
+    Bprep = preparedB.mat;
+    if (preparedB.converted) {
+      BprepConverted = Bprep;
+    }
+    if (Aprep.type() !== Bprep.type()) {
+      Btmp = new cv.Mat();
+      Bprep.convertTo(Btmp, Aprep.type());
+      Bprep = Btmp;
     }
 
     dst = new cv.Mat();
@@ -267,14 +261,8 @@ async function applyOperation() {
       cv.subtract(Aprep, Bprep, dst);
     } else if (op === 'multiply') {
       cv.multiply(Aprep, Bprep, dst, 1 / 255);
-    } else if (op === 'and') {
-      cv.bitwise_and(Aprep, Bprep, dst);
-    } else if (op === 'or') {
-      cv.bitwise_or(Aprep, Bprep, dst);
     } else if (op === 'lighten') {
       cv.max(Aprep, Bprep, dst);
-    } else if (op === 'notA') {
-      cv.bitwise_not(Aprep, dst);
     } else if (op === 'blend') {
       const a = parseFloat(els.alpha.value);
       const b = 1.0 - a;
@@ -391,22 +379,6 @@ const filterDetails = {
       'Multiplica píxel a píxel para generar un efecto de oscurecimiento suave. ' +
       'Ideal para crear sombras o contrastes con textura.',
   },
-  and: {
-    title: 'Bitwise AND',
-    icon: '🎭',
-    category: 'bitwise',
-    description:
-      'Aplica una máscara lógica, mostrando solo las zonas donde ambas imágenes ' +
-      'tienen información. Muy usado para recortar objetos.',
-  },
-  or: {
-    title: 'Bitwise OR',
-    icon: '🧩',
-    category: 'bitwise',
-    description:
-      'Combina las regiones visibles de ambas imágenes. Se utiliza para unir ' +
-      'formas o capas binarias.',
-  },
   lighten: {
     title: 'Lighten (Max)',
     icon: '✨',
@@ -414,14 +386,6 @@ const filterDetails = {
     description:
       'Elige el valor más claro entre A y B en cada píxel. Se usa para sumar ' +
       'luces y resaltar elementos brillantes.',
-  },
-  notA: {
-    title: 'Bitwise NOT',
-    icon: '🔄',
-    category: 'bitwise',
-    description:
-      'Invierte los colores de la imagen. Se usa para crear negativos ' +
-      'o preparar máscaras.',
   },
   blend: {
     title: 'Blend (addWeighted)',
